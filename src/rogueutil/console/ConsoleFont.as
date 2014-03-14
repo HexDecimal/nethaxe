@@ -25,8 +25,8 @@ package rogueutil.console {
 		 * 1+ = index in the cache
 		 * -1 = does not exist
 		 */
-		protected var _glyphStatus:Vector.<int> = new Vector.<int>(0x10000)
-		private var _glyphs:Vector.<BitmapData> = new Vector.<BitmapData>(0x10000)
+		protected var _glyphStatus:Vector.<int> = new Vector.<int>(0x20000)
+		private var _glyphs:Vector.<BitmapData> = new Vector.<BitmapData>(0x20000)
 		
 		protected var _columns:int;
 		protected var _rows:int;
@@ -96,7 +96,7 @@ package rogueutil.console {
 		 * @return true if the glyph can be gotten from this object, flase of the glyph is blank (such as the space glyph)
 		 */
 		public function glyphExists(index:int):Boolean {
-			index &= 0xffff // remove special bits
+			index &= 0x1ffff // remove special bits
 			lazyGenerateGlyph(index)
 			return _glyphStatus[index] > 0
 		}
@@ -116,8 +116,8 @@ package rogueutil.console {
 			return true
 		}
 		
-		private function lazyGenerateGlyph(index:int):void {
-			index &= 0xffff // remove special bits
+		protected function lazyGenerateGlyph(index:int):void {
+			index &= 0x1ffff // remove special bits
 			if (_glyphStatus[index] != 0) { return } // glyph already generated or does not exist
 			
 			var glyph:BitmapData = generateGlyph(index)
@@ -155,7 +155,7 @@ package rogueutil.console {
 		
 		public function getGlyph(index:int):BitmapData {
 			lazyGenerateGlyph(index)
-			index &= 0xffff
+			index &= 0x1ffff
 			return _glyphs[index]
 		}
 	}
