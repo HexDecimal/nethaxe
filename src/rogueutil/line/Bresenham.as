@@ -38,7 +38,8 @@ package rogueutil.line
 
 		/**
 		 * Call callback(x:int, y:int, index:int) on every point on this line
-		 * The callback can return a true value to cancel the computation, this function will return true if it was canceled
+		 * The callback can return a true value to cancel the computation
+		 * This function will return false if it was canceled and true otherwise
 		 */
 		public static function plot(x0:int, y0:int, x1:int, y1:int, callback:Function):Boolean {
 			var dx:int = Math.abs(x1 - x0);
@@ -49,7 +50,7 @@ package rogueutil.line
 			var index:int = 0;
 
 			while (true){
-				if (callback(x0, y0, index++)) { return true }
+				if (callback(x0, y0, index++)) { return false }
 
 				if (x0==x1 && y0==y1)
 					break;
@@ -64,7 +65,7 @@ package rogueutil.line
 					y0 += sy;
 				}
 			}
-			return false;
+			return true;
 		}
 	}
 
