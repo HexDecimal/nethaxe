@@ -95,6 +95,15 @@ package rogueutil.fov
 		}
 		
 		/**
+		 * Set all tiles to be lit, this is usally for shadowcasting
+		 */
+		protected function lightByDefault():void {
+			for (var i:int = _fovMap.length - 1; i >= 0; i-- ) {
+				_fovMap[i] = true
+			}
+		}
+		
+		/**
 		 * Add lighting to the walls as a post process effect
 		 * Light to spread to light blocking tiles to the sides and diagonally
 		 */
@@ -102,7 +111,7 @@ package rogueutil.fov
 			var wallLight:Vector.<Boolean> = new Vector.<Boolean>(_fovMap.length)
 			for (var y:int = -_radiusI; y <= _radiusI; y++) {
 				for (var x:int = -_radiusI; x <= _radiusI; x++) {
-					if(getMapVisible(x, y)){continue}
+					if(getMapVisible(x, y) || !inRadius(x, y)){continue}
 					var index:int = localIndex(x, y)
 					if (x) { wallLight[index] ||= getLocalVisible(x + (x < 0?1:-1), y) }
 					if (y) { wallLight[index] ||= getLocalVisible(x, y + (y < 0?1:-1)) }
@@ -111,6 +120,27 @@ package rogueutil.fov
 			}
 			for (var i:int = wallLight.length -1; i >= 0; i-- ) {
 				_fovMap[i] ||= wallLight[i]
+				//_fovMap[i] = _fovMap[i] || (wallLight[i] && inRadius(i % _width + _radiusI, i / _width + _radiusI))
+			}
+		}
+		
+		/**
+		 * Like shadeWalls but only lights walls at the far corner of a lit tile
+		 */
+		protected function shadeWallCorners():void {
+			var wallLight:Vector.<Boolean> = new Vector.<Boolean>(_fovMap.length)
+			for (var y:int = -_radiusI; y <= _radiusI; y++) {
+				for (var x:int = -_radiusI; x <= _radiusI; x++) {
+					if(getMapVisible(x, y) || !inRadius(x, y)){continue}
+					var index:int = localIndex(x, y)
+					if (x && y) {
+						wallLight[index] ||= getMapVisible(x + (x < 0?1: -1), y + (y < 0?1: -1)) && getLocalVisible(x + (x < 0?1: -1), y + (y < 0?1: -1))
+						}
+				}
+			}
+			for (var i:int = wallLight.length -1; i >= 0; i-- ) {
+				_fovMap[i] ||= wallLight[i]
+				//_fovMap[i] = _fovMap[i] || (wallLight[i] && inRadius(i % _width + _radiusI, i / _width + _radiusI))
 			}
 		}
 		
