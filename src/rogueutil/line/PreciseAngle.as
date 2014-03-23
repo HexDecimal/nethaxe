@@ -43,11 +43,10 @@ package rogueutil.line
 			
 			// x & y are now positive and on a low slope
 			// get the angle
-			var angle:Number = 1.0 / (x1 + 1) * y1
-			if (callback(_ax, _ay, x)) { return false }
-			for (var x:int = 1; x <= x1;x++ ){
+			var angle:Number = 1.0 / (x1 + 1) * (y1 +.5)
+			for (var x:int = 0; x <= x1;x++ ){
 				// get y from angle
-				var y:int = Math.round(angle / (1.0 / (x + 1)))
+				var y:int = angle / (1.0 / (x + 1))
 				if (callback(_xx * x + _yx * y + _ax, _xy * x + _yy * y + _ay, x)) { return false }
 			}
 			return true
