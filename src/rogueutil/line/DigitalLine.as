@@ -28,8 +28,8 @@ package rogueutil.line
 			if (x1 < 0) { _xx = -1; x1 *= -1 }
 			if (y1 < 0) { _yy = -1; y1 *= -1 }
 			if ( x1 < y1) { // flip octant
-				_xy = _xx
-				_yx = _yy
+				_xy = _yy
+				_yx = _xx
 				_xx = 0
 				_yy = 0
 				
