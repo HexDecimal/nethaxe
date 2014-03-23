@@ -44,8 +44,6 @@ package rogueutil.line
 			// get the angle
 			var angle:Number = 1.0 / (x1 + 1) * y
 			
-			if (callback(_xx * x + _yx * y + _ax, _xy * x + _yy * y + _ay, x)) { return false }
-			
 			for (var x:int = 0; x <= x1;x++ ){
 				// get y from angle
 				var y:int = Math.round(angle / (1.0 / (x + 1)))
