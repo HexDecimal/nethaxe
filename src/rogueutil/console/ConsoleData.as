@@ -12,7 +12,7 @@ package rogueutil.console
 	 
 	
 	 
-	public class ConsoleData implements IConsoleData
+	public class ConsoleData
 	{
 		private var _width:int
 		private var _height:int
@@ -121,14 +121,15 @@ package rogueutil.console
 			_blendMode = blendMode
 		}
 		
+		/*
 		public function copy(source:ConsoleData, sourceRect:Rectangle, destPoint:Point, characterCopy:Boolean = true,
 		                     foregroundCopy:Boolean = true, backgroundCopy:Boolean = true):void {
-			sourceRect = sourceRect.intersection(source.rect).intersection(this.rect)
+			//sourceRect = sourceRect.intersection(source.rect).intersection(this.rect)
 			if (characterCopy) {
 				var endX:int = sourceRect.right
 				var endY:int = sourceRect.bottom
 				for (var y:int = sourceRect.y; y < endY; y++ ) {
-					var sourceI:int = y * source.width + sourceRect.x
+					var sourceI:int = (y + sourceRect.y) * source.width + sourceRect.x
 					var destI:int = (y + destPoint.y) * this.width + destPoint.x
 					for (var x:int = sourceRect.x; x < endX; x++ ) {
 						_chars[destI++] = source._chars[sourceI++]
@@ -137,7 +138,7 @@ package rogueutil.console
 			}
 			if (foregroundCopy) { _fgColor.copyPixels(source.fgColor, sourceRect, destPoint) }
 			if (backgroundCopy) { _bgColor.copyPixels(source.bgColor, sourceRect, destPoint) }
-		}
+		}*/
 		
 		public function drawChar(x:int, y:int, char:int):void {
 			var index:int = index(x, y)
