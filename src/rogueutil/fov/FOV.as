@@ -154,6 +154,20 @@ package rogueutil.fov
 			return _fovMap[y * _width + x]
 		}
 		
+		/**
+		 * Give a callback with the x,y coordinates of tiles in light or darkness
+		 * function should be func(x:int, y:int, isLight:Boolean):void
+		 */
+		public function callWithVisibility(callback):void {
+			if(!_fovMap){return}
+			for (var y:int = -_radiusI; y <= _radiusI; y++) {
+				for (var x:int = -_radiusI; x <= _radiusI; x++) {
+					cbVisible(x + _ax_cb, y + _ay_cb, getLocalVisible(x, y))
+				}
+			}
+			
+		}
+		
 		protected function localIndex(x:int, y:int):int {
 			return (x * _xy + y * _yy + _ay_local) * _width + (x * _xx + y * _yx + _ax_local)
 		}
