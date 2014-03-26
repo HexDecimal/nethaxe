@@ -16,6 +16,11 @@ package rogueutil.console
 		protected var _consoleFont:ConsoleFont
 		protected var _consoleData:ConsoleData
 		
+		protected var _fgCopy:Vector.<uint>
+		protected var _bgCopy:Vector.<uint>
+		protected var _charCopy:Vector.<uint>
+		
+		
 		/**
 		 * This object is slower than ConsoleRender!
 		 */
@@ -31,6 +36,9 @@ package rogueutil.console
 			addEventListener(Event.ENTER_FRAME, update, false, 0, true)
 			addEventListener(Event.RENDER, update, false, 0, true)
 			
+			_fgCopy = new Vector.<uint>(_width * _height)
+			_bgCopy = new Vector.<uint>(_width * _height)
+			_charCopy = new Vector.<uint>(_width * _height)
 		}
 		
 		protected function get _width():int {
@@ -45,6 +53,8 @@ package rogueutil.console
 			var chars:Vector.<int> = _consoleData._chars
 			var fg:Vector.<uint> = _consoleData.fgColor.getVector(_consoleData.rect)
 			var bg:Vector.<uint> = _consoleData.bgColor.getVector(_consoleData.rect)
+			//var fg:Vector.<uint> = _consoleData._fgColorVector
+			//var bg:Vector.<uint> = _consoleData._bgColorVector
 			
 			var i:int = _width * _height - 1
 			
@@ -59,11 +69,15 @@ package rogueutil.console
 				for (var x:int = _width - 1; x >= 0; x-- ) {
 					rect.x = x * _consoleFont.tileWidth
 					pos.x = rect.x
-					bitmapData.fillRect(rect, bg[i])
-					var glyph:BitmapData = _consoleFont.getGlyph(chars[i])
-					if(glyph){
-						
-						bitmapData.merge(glyph, glyph.rect, pos, fg[i] >> 16 & 0xff, fg[i] >> 8 & 0xff, fg[i] & 0xff, 0xff)
+					if (_charCopy[i] != chars[i] || _fgCopy[i] != fg[i] || _bgCopy[i] != bg[i]) {
+						bitmapData.fillRect(rect, bg[i])
+						var glyph:BitmapData = _consoleFont.getGlyph(chars[i])
+						if(glyph){
+							bitmapData.merge(glyph, glyph.rect, pos, fg[i] >> 16 & 0xff, fg[i] >> 8 & 0xff, fg[i] & 0xff, 1)
+						}
+						_bgCopy[i] = bg[i]
+						_fgCopy[i] = fg[i]
+						_charCopy[i] = chars[i]
 					}
 					i--
 				}
