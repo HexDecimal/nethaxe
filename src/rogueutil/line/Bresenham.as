@@ -15,7 +15,7 @@ package rogueutil.line
 		private static var tempPoints:Vector.<Point>
 		
 		/**
-		 * Return the length of a line between thses two points
+		 * Return the length of a line between these two points
 		 */
 		public static function length(x0:int, y0:int, x1:int, y1:int):int {
 			return Math.abs(x1 - x0) + Math.abs(y1 - y0) + 1

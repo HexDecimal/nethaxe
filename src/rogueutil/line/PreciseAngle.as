@@ -1,5 +1,6 @@
 package rogueutil.line 
 {
+	import flash.geom.Point;
 	/**
 	 * A line of sight algorithm based on Restrictive Precise Angle Shadowcasting
 	 * @author Kyle Stewart
@@ -11,6 +12,34 @@ package rogueutil.line
 		{
 			
 		}
+		
+		/**
+		 * Return the length of a line between these two points
+		 */
+		public static function length(x0:int, y0:int, x1:int, y1:int):int {
+			return Math.max(Math.abs(x1 - x0), Math.abs(y1 - y0)) + 1
+		}
+		
+		/**
+		 * A singleton to reduce allocations when calling getPoints
+		 */
+		private static var tempPoints:Vector.<Point>
+		
+		/**
+		 * Return a Vector of Points in this line, this is slow
+		 */
+		public static function getPoints(x0:int, y0:int, x1:int, y1:int):Vector.<Point> {
+			tempPoints = new Vector.<Point>(length(x0, y0, x1, y1))
+			plot(x0, y0, x1, y1, appendPoint)
+			var points:Vector.<Point> = tempPoints
+			tempPoints = null
+			return points
+		}
+		
+		private static function appendPoint(x:int, y:int, index:int):void {
+			tempPoints[index] = new Point(x, y)
+		}
+
 		
 		public static function plot(x0:int, y0:int, x1:int, y1:int, callback:Function):Boolean {
 			// make an identity matrix
