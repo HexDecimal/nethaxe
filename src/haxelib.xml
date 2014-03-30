@@ -1,0 +1,7 @@
+<project name="rogueutil" url="http://myproject.org" license="MIT">
+    <user name="HexDecimal"/>
+    <tag v="flash"/>
+    <tag v="example"/>
+    <description>This project is an example of an haxelib project</description>
+    <version name="1.0">Initial release</version>
+</project>
