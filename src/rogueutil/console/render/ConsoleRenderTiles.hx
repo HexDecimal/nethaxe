@@ -1,4 +1,4 @@
-package rogueutil.console;
+package rogueutil.console.render;
 import flash.display.Bitmap;
 import flash.display.BitmapData;
 import flash.display.Sprite;
@@ -9,15 +9,15 @@ import flash.geom.Rectangle;
  * ...
  * @author Kyle Stewart
  */
-class ConsoleTileRender extends Sprite
+class ConsoleRenderTiles extends Sprite implements ConsoleRender
 {
 	
-	public var consoleData(default, null):ConsoleData;
+	public var consoleData(default, null):Console;
 	public var consoleFont(default, null):ConsoleFont;
 	
 	private var _tiles:Array<Bitmap>;
 
-	public function new(consoleData:ConsoleData, consoleFont:ConsoleFont) {
+	public function new(consoleData:Console, consoleFont:ConsoleFont) {
 		this.consoleData = consoleData;
 		this.consoleFont = consoleFont;
 		super();

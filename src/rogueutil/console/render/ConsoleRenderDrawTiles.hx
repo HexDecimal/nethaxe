@@ -1,4 +1,4 @@
-package rogueutil.console;
+package rogueutil.console.render;
 
 import flash.display.Sprite;
 import flash.events.Event;
@@ -8,15 +8,15 @@ import openfl.display.Tilesheet;
  * ...
  * @author Kyle Stewart
  */
-class ConsoleDrawTilesRender extends Sprite
+class ConsoleRenderDrawTiles extends Sprite implements ConsoleRender
 {
 
-	public var consoleData(default, null):ConsoleData;
+	public var consoleData(default, null):Console;
 	public var consoleFont(default, null):ConsoleFont;
 	
 	private var tileArray:Array<Float>;
 	
-	public function new(consoleData:ConsoleData, consoleFont:ConsoleFont) 
+	public function new(consoleData:Console, consoleFont:ConsoleFont) 
 	{
 		super();
 		this.consoleData = consoleData;
