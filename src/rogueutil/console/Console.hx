@@ -24,7 +24,7 @@ class Console
 		
 	}
 	
-	private inline function getIndex(x:Int, y:Int):Int {
+	public inline function getIndex(x:Int, y:Int):Int {
 		return (y * width + x);
 	}
 	

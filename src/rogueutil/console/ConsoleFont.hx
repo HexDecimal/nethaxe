@@ -78,6 +78,31 @@ class ConsoleFont
 		return new Rectangle(x * glyphWidth, y * glyphHeight, glyphWidth, glyphHeight);
 	}
 	
+	/**
+	 * Like getTexureRect but returns u,v data
+	 
+	public inline function getTexureUV(index:Int):Rectangle {
+		if (index < 0) { index = 0; }
+		var x:Int = index % _megaTexColumns;
+		var y:Int = Math.floor(index / _megaTexColumns);
+		var width:Float = 1 / _megaTexColumns;
+		var height:Float = 1 / _megaTexRows;
+		return new Rectangle(x * width, y * height, width, height);
+	}*/
+	
+	public function getTextureRows():Int {
+		return _megaTexRows;
+	}
+	
+	public function getTextureColumns():Int {
+		return _megaTexColumns;
+	}
+	
+	public inline function getTilePos(index:Int):Point {
+		if (index < 0) { index = 0; }
+		return new Point(index % _megaTexColumns, Math.floor(index / _megaTexColumns));
+	}
+	
 	public inline function getTexture():BitmapData {
 		return _megaTex;
 	}
