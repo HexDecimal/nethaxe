@@ -1,4 +1,4 @@
-package rogueutil.line;
+package nethaxe.line;
 
 /**
  * ...

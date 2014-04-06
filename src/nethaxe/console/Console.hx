@@ -1,4 +1,4 @@
-package rogueutil.console;
+package nethaxe.console;
 
 /**
  * ...

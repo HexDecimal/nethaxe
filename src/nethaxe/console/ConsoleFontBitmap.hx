@@ -1,7 +1,7 @@
-package rogueutil.console;
+package nethaxe.console;
 
 import flash.display.BitmapData;
-import rogueutil.console.ConsoleFont;
+import nethaxe.console.ConsoleFont;
 /**
  * ...
  * @author Kyle Stewart

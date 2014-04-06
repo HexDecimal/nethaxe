@@ -1,4 +1,4 @@
-package rogueutil.console.render;
+package nethaxe.console.render;
 import flash.display.BitmapData;
 import flash.display.Sprite;
 import flash.display.Stage3D;
@@ -21,8 +21,8 @@ import flash.geom.Rectangle;
 import flash.utils.ByteArray;
 import flash.utils.Endian;
 import flash.Vector.Vector;
-import rogueutil.console.Console;
-import rogueutil.console.ConsoleFont;
+import nethaxe.console.Console;
+import nethaxe.console.ConsoleFont;
 import hxsl.Shader;
 
 /**

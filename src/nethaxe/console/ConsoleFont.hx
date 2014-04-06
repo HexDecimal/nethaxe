@@ -1,4 +1,4 @@
-package rogueutil.console;
+package nethaxe.console;
 import flash.display.BitmapData;
 import flash.display.Graphics;
 import flash.geom.Point;

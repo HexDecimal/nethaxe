@@ -3,10 +3,10 @@
 	<!-- NMML reference: https://gist.github.com/1763850 -->
 	
 	<!-- metadata, make sure 'package' is at least 3 segments (ie. com.mycompany.myproject) -->
-	<meta title="rogueutil" package="rogueutil" version="1.0.0" company="Kyle Stewart" />
+	<meta title="nethaxe" package="nethaxe" version="1.0.0" company="Kyle Stewart" />
 	
 	<!-- output -->
-	<app main="Main" file="rogueutil" path="bin" />
+	<app main="Main" file="nethaxe" path="bin" />
 	
 	<window background="#000000" fps="60" />
 	<window width="800" height="480" unless="mobile" />

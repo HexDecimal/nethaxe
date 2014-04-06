@@ -6,14 +6,14 @@ import flash.Lib;
 import openfl.Assets;
 import openfl.display.FPS;
 import openfl.events.SystemEvent;
-import rogueutil.console.Console;
-import rogueutil.console.ConsoleFont;
-import rogueutil.console.ConsoleFontBitmap;
-import rogueutil.console.render.ConsoleRenderDrawTiles;
-import rogueutil.console.render.ConsoleRenderBitmap;
-import rogueutil.console.render.ConsoleRenderGraphic;
-import rogueutil.console.render.ConsoleRenderShader;
-import rogueutil.console.render.ConsoleRenderTiles;
+import nethaxe.console.Console;
+import nethaxe.console.ConsoleFont;
+import nethaxe.console.ConsoleFontBitmap;
+import nethaxe.console.render.ConsoleRenderDrawTiles;
+import nethaxe.console.render.ConsoleRenderBitmap;
+import nethaxe.console.render.ConsoleRenderGraphic;
+import nethaxe.console.render.ConsoleRenderShader;
+import nethaxe.console.render.ConsoleRenderTiles;
 
 /**
  * ...
@@ -34,6 +34,8 @@ class Main extends Sprite
 	
 	var cData:Console;
 	
+	private var font:ConsoleFont;
+	
 	function init() 
 	{
 		if (inited) return;
@@ -44,8 +46,7 @@ class Main extends Sprite
 		
 		addEventListener(Event.ENTER_FRAME, update);
 		
-		var font:ConsoleFont = new ConsoleFontBitmap(Assets.getBitmapData('img/6x12.png'), 6, 12);
-		
+		font = new ConsoleFontBitmap(Assets.getBitmapData('img/6x12.png'), 6, 12);
 		cData = new Console(120, 40);
 		//cData = new ConsoleData(30, 20);
 		//cData.ch[1] = 'A'.charCodeAt(0);
