@@ -1,4 +1,8 @@
 package nethaxe.console;
+import flash.display.Stage;
+import nethaxe.console.render.ConsoleRender;
+import nethaxe.console.render.ConsoleRenderShader;
+import nethaxe.console.render.ConsoleRenderTiles;
 
 /**
  * ...
@@ -24,8 +28,28 @@ class Console
 		
 	}
 	
+	/**
+	 * Return the 1D index on this console at the 2D index x,y
+	 */
 	public inline function getIndex(x:Int, y:Int):Int {
 		return (y * width + x);
+	}
+	
+	/**
+	 * Try to return the fastest renderer for this console.
+	 * Most of the renderers are for bechmarking and testing,
+	 * this function should always get the best one for the platform you're on.
+	 */
+	public function getFastRenderer(font:ConsoleFont, ?stage:Stage):ConsoleRender {
+		#if flash
+		if (stage != null) {
+			return new ConsoleRenderShader(this, font, stage.stage3Ds[0]);
+		}else {
+			return new ConsoleRenderTiles(this, font);
+		}
+		#else
+		return new ConsoleRenderTiles(this, font);
+		#end
 	}
 	
 }
