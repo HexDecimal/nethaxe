@@ -16,7 +16,7 @@
 	<source path="src" />
 	<source path="test" />
 	<haxelib name="openfl" />
-	<haxelib name="actuate" />
+	<!-- <haxelib name="actuate" /> -->
 	<haxelib name="hxsl" />
 	
 	<!-- assets -->

@@ -22,19 +22,16 @@
   </classpaths>
   <!-- Build options -->
   <build>
-    <option directives="tools=1.3.2&#xA;glsl2agal&#xA;display&#xA;web" />
+    <option directives="tools=1.3.2&#xA;display&#xA;web" />
     <option flashStrict="False" />
     <option noInlineOnDebug="False" />
     <option mainClass="ApplicationMain" />
     <option enabledebug="True" />
-    <option additional="--no-output&#xA;-swf-lib glsl2agal.swf&#xA;-swf-lib agalminiassembler.swf&#xA;-swf-version 11.2&#xA;#--remap nme:flash" />
+    <option additional="--no-output&#xA;-swf-version 11.2&#xA;#--remap nme:flash" />
   </build>
   <!-- haxelib libraries -->
   <haxelib>
     <library name="openfl" />
-    <library name="actuate" />
-    <library name="openfl-stage3d" />
-    <library name="stage3d-glsl" />
     <library name="hxsl" />
   </haxelib>
   <!-- Class files to compile (other referenced classes will automatically be included) -->
