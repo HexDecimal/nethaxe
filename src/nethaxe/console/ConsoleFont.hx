@@ -1,8 +1,10 @@
 package nethaxe.console;
+#if !macro
 import flash.display.BitmapData;
 import flash.display.Graphics;
 import flash.geom.Point;
 import flash.geom.Rectangle;
+#end
 import openfl.display.Tilesheet;
 
 /**
@@ -23,8 +25,8 @@ class ConsoleFont
 	 * Most of the time entire pages of glpyhs will be missing from  a font,
 	 * a bucket sort seems ideal for this kind of data
 	 */
-	private var _glyphBucket:Array<Array<Int>> = [for ( _ in 0...(Math.floor(MAX_GLYPHS / BUCKET_SIZE))) null];
-	private var _bitmapBucket:Array<Array<BitmapData>> = [for ( _ in 0...(Math.floor(MAX_GLYPHS / BUCKET_SIZE))) null];
+	private var _glyphBucket:Array<Array<Int>>; // create these as they are used
+	private var _bitmapBucket:Array<Array<BitmapData>>;
 	
 	/**
 	 * One texture to rule them all, hopefully optimized under most implementations
@@ -38,7 +40,7 @@ class ConsoleFont
 	
 	public function new() 
 	{
-		tileSheet = new Tilesheet(_megaTex);
+		//tileSheet = new Tilesheet(_megaTex);
 	}
 	
 	/**
@@ -98,13 +100,61 @@ class ConsoleFont
 		return _megaTexColumns;
 	}
 	
-	public inline function getTilePos(index:Int):Point {
+	public function getTilePos(index:Int):Point {
 		if (index < 0) { index = 0; }
 		return new Point(index % _megaTexColumns, Math.floor(index / _megaTexColumns));
 	}
 	
 	public inline function getTexture():BitmapData {
+		updateTexture();
 		return _megaTex;
+	}
+	
+	public function getTileSheet():Tilesheet {
+		updateTexture();
+		return new Tilesheet(_megaTex);
+	}
+	
+	/**
+	 * Lazy update the master texture.
+	 */
+	private function updateTexture():Void {
+		if (_megaTex != null) { return; } // only lazy updates
+		if(_glyphBucket==null){
+			_glyphBucket = [for ( _ in 0...(Math.floor(MAX_GLYPHS / BUCKET_SIZE))) null];
+		}
+		//_megaTexRows = 1;
+		//_megaTexColumns = getGlypthCount();
+		// TODO: dynamic texture size
+		_megaTexRows = Math.floor(1024 / glyphWidth);
+		_megaTexColumns = Math.floor(1024 / glyphHeight);
+		_megaTex = new BitmapData(glyphWidth * _megaTexColumns, glyphHeight * _megaTexRows, true, 0x00000000);
+		var texIndex:Int = 1;
+		for (bIndex in 0..._bitmapBucket.length) {
+			if (_bitmapBucket[bIndex] == null) { continue; }
+			for (sIndex in 0...BUCKET_SIZE) {
+				if (_bitmapBucket[bIndex][sIndex] == null) { continue; }
+				var p:Point = getTilePos(texIndex);
+				p.x *= glyphWidth;
+				p.y *= glyphHeight;
+				_megaTex.copyPixels(_bitmapBucket[bIndex][sIndex], _bitmapBucket[bIndex][sIndex].rect, p);
+				setGlyphDirectly(bIndex * BUCKET_SIZE + sIndex, texIndex++);
+			}
+		}
+	}
+	
+	/**
+	 * Return a total number of glyphs to reserve texture space for
+	 */
+	private function getGlypthCount():Int {
+		var count:Int = 1; // reserve an extra free sapce
+		for (bucket in _bitmapBucket) {
+			if (bucket == null) { continue; }
+			for (status in bucket) {
+				if (status != null) { count++; }
+			}
+		}
+		return count;
 	}
 	
 	public inline function getTile(glyph:Int):BitmapData {
@@ -140,8 +190,17 @@ class ConsoleFont
 		}
 	}
 	
-	public inline function setGlyphWithBitmap(glyph:Int, bitmap:BitmapData):Void {
-		
+	
+	public function setGlyphWithBitmap(glyph:Int, bitmap:BitmapData):Void {
+		if(_bitmapBucket==null){
+			_bitmapBucket = [for ( _ in 0...(Math.floor(MAX_GLYPHS / BUCKET_SIZE))) null];
+		}
+		var bucketIndex:Int = Math.floor(glyph / BUCKET_SIZE);
+		if (_bitmapBucket[bucketIndex] == null) {
+			// init bucket with nulls
+			_bitmapBucket[bucketIndex] = [for (_ in 0...BUCKET_SIZE) null];
+		}
+		_bitmapBucket[bucketIndex][glyph % BUCKET_SIZE] = bitmap;
 	}
 	
 }

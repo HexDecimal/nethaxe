@@ -2,8 +2,13 @@ package nethaxe.console;
 import flash.display.DisplayObject;
 import flash.display.Stage;
 import nethaxe.console.render.ConsoleRender;
-import nethaxe.console.render.ConsoleRenderShader;
 import nethaxe.console.render.ConsoleRenderTiles;
+import nethaxe.console.render.ConsoleRenderBitmap;
+
+
+#if flash
+import nethaxe.console.render.ConsoleRenderShader;
+#end
 
 /**
  * ...
@@ -68,7 +73,7 @@ class Console
 	 * @param	bg
 	 */
 	public inline function clear(ch:Int = 0x20, fg:UInt = 0xffffffff, bg:UInt = 0xff000000):Void {
-		if (parent != null) { return parent.drawRect(x, y, width, height, ch, fg, bg); }
+		if (parent != null) { parent.drawRect(x, y, width, height, ch, fg, bg); return; }
 		this.ch = [for (_ in 0...(width * height)) ch];
 		this.fg = [for (_ in 0...(width * height)) fg];
 		this.bg = [for (_ in 0...(width * height)) bg];
@@ -89,7 +94,7 @@ class Console
 	 * @param	bg background color as an 24-bit RGB value
 	 */
 	public inline function drawTile(x:Int, y:Int, ch:Int, fg:UInt=0xffffffff, bg:UInt=0xff000000):Void {
-		if (parent != null) { return parent.drawTile(x + this.x, y + this.y, ch); }
+		if (parent != null) { return parent.drawTile(x + this.x, y + this.y, ch, fg, bg); }
 		setTile(getIndex(x, y), ch, fg, bg);
 	}
 	
@@ -166,8 +171,10 @@ class Console
 		}else {
 			return new ConsoleRenderTiles(this, font);
 		}
-		#else
+		#elseif js
 		return new ConsoleRenderTiles(this, font);
+		#else
+		return new ConsoleRenderBitmap(this, font);
 		#end
 	}
 	

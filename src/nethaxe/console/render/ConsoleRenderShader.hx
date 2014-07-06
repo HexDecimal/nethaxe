@@ -59,6 +59,7 @@ class ConsoleRenderShader extends Sprite implements ConsoleRender
 		this.stage3d = stage3d;
 		stage3d.addEventListener( Event.CONTEXT3D_CREATE, onReady );
 		//stage3d.requestContext3D(Context3DRenderMode.AUTO, Context3DProfile.BASELINE_CONSTRAINED);
+		//stage3d.requestContext3D(null, Context3DProfile.BASELINE_CONSTRAINED);
 		stage3d.requestContext3D();
 	}
 	
@@ -76,7 +77,7 @@ class ConsoleRenderShader extends Sprite implements ConsoleRender
 		#end
 		context3d.configureBackBuffer(consoleData.width * consoleFont.glyphWidth,
 		                              consoleData.height * consoleFont.glyphHeight, 0, false, false);
-		// TODO: make a getFinalTexture call for ConsoleFont
+		// TODO: make this renderer aware of texture changes
 		var tileset:BitmapData = consoleFont.getTexture();
 		var buffer:BitmapData = new BitmapData(getPowerOfTwo(tileset.width), getPowerOfTwo(tileset.height), true, 0);
 		buffer.copyPixels(tileset, tileset.rect, new Point());
@@ -88,6 +89,7 @@ class ConsoleRenderShader extends Sprite implements ConsoleRender
 		                                   Context3DTextureFormat.BGRA, false);
 		texTiles.uploadFromBitmapData(buffer);
 		
+		//context3d.createRectangleTexture(consoleData.width, consoleData.height, Context3DTextureFormat.BGRA, false);
 		texBG = context3d.createTexture(getTexWidth(), getTexHeight(),
 		                                Context3DTextureFormat.BGRA, false);
 		texFG = context3d.createTexture(getTexWidth(), getTexHeight(),

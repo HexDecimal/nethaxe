@@ -1,6 +1,7 @@
 package nethaxe.console;
-
+#if !macro
 import flash.display.BitmapData;
+#end
 import nethaxe.console.ConsoleFont;
 /**
  * ...
@@ -22,7 +23,7 @@ class ConsoleFontBitmap extends ConsoleFont
 		for (y in 0..._megaTexRows) {
 			for (x in 0..._megaTexColumns) {
 				setGlyphDirectly(_nextFreeTex, _nextFreeTex);
-				tileSheet.addTileRect(getTexureRect(_nextFreeTex));
+				//tileSheet.addTileRect(getTexureRect(_nextFreeTex));
 				_nextFreeTex++;
 			}
 		}

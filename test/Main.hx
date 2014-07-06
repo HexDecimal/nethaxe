@@ -3,16 +3,17 @@ package ;
 import flash.display.Sprite;
 import flash.events.Event;
 import flash.Lib;
+import nethaxe.console.ConsoleFontBDF;
 import openfl.Assets;
 import openfl.display.FPS;
 import openfl.events.SystemEvent;
 import nethaxe.console.Console;
 import nethaxe.console.ConsoleFont;
+import nethaxe.console.ConsoleFontAssets;
 import nethaxe.console.ConsoleFontBitmap;
 import nethaxe.console.render.ConsoleRenderDrawTiles;
 import nethaxe.console.render.ConsoleRenderBitmap;
 import nethaxe.console.render.ConsoleRenderGraphic;
-import nethaxe.console.render.ConsoleRenderShader;
 import nethaxe.console.render.ConsoleRenderTiles;
 
 /**
@@ -32,7 +33,14 @@ class Main extends Sprite
 		// else (resize or orientation change)
 	}
 	
-	var cData:Console;
+	var states:Array<State> = [new PerformanceState()];
+	var stateIndex:Int = 0;
+	
+	var rootConsole:Console;
+	var sideConsole:Console;
+	var mainConsole:Console;
+	
+	var oldTime:Float;
 	
 	private var font:ConsoleFont;
 	
@@ -46,21 +54,24 @@ class Main extends Sprite
 		
 		addEventListener(Event.ENTER_FRAME, update);
 		
-		font = new ConsoleFontBitmap(Assets.getBitmapData('img/6x12.png'), 6, 12);
-		cData = new Console(120, 40);
-		//cData = new ConsoleData(30, 20);
-		//cData.ch[1] = 'A'.charCodeAt(0);
-		//addChild(new ConsoleRenderBitmap(cData, font));
-		//addChild(new ConsoleRenderGraphic(cData, font));
-		//addChild(new ConsoleRenderTiles(cData, font));
-		//addChild(new ConsoleRenderDrawTiles(cData, font));
-		addChild(new ConsoleRenderShader(cData, font, stage.stage3Ds[0]));
-		//addChild(new ConsoleRenderAGAL(cData, font, stage.stage3Ds[0]));
+		//font = new ConsoleFontBitmap(Assets.getBitmapData('img/6x12.png'), 6, 12);
+		font = new ConsoleFontBDF(Assets.getBytes('fonts/bdf/6x12.bdf'));
+		rootConsole = new Console(120, 40);
+		var SIDEBAR_WIDTH = 30;
+		sideConsole = new Console(SIDEBAR_WIDTH, rootConsole.height, rootConsole, 0, 0);
+		mainConsole = new Console(rootConsole.width - SIDEBAR_WIDTH, rootConsole.height, rootConsole, SIDEBAR_WIDTH, 0);
+		
+		addChild(rootConsole.getFastRenderer(font, stage));
+		//addChild(new ConsoleRenderBitmap(rootConsole, font));
+		//addChild(new ConsoleRenderGraphic(rootConsole, font));
+		//addChild(new ConsoleRenderTiles(rootConsole, font));
+		
 		var fps:FPS = new FPS(stage.stageWidth - 120, stage.stageHeight - 40);
-		//fps.opaqueBackground = 0xffffff;
 		fps.background = true;
 		fps.backgroundColor = 0xffffff;
 		addChild( fps);
+		
+		oldTime = Date.now().getTime();
 		// Stage:
 		// stage.stageWidth x stage.stageHeight @ stage.dpiScale
 		
@@ -68,23 +79,25 @@ class Main extends Sprite
 		// nme.Assets.getBitmapData("img/assetname.jpg");
 	}
 	
-	private var tick:Int = 0;
-	
 	private function update(?e:Dynamic):Void {
-		tick++;
-		var i:Int = 0;
-		for (y in 0...cData.height) {
-			for (x in 0...cData.width) {
-				cData.ch[i] = Math.floor(Math.random() * 256);
-				//cData.fg[i] = Math.floor(Math.random() * 0xff) | 0xffff00;
-				cData.fg[i] = 0xffffff;
-				cData.bg[i] = Math.floor(Math.random() * 0xff);
-				i++;
-			}
-		}
-		//cData.bg[tick % cData.bg.length] = 0xff0000;
-		//cData.bg[cData.getIndex(5, 2)] = 0xff0000;
+		
+		states[stateIndex].step(mainConsole);
+		//mainConsole.drawStr(0, 0, "Hello World\nTest");
+		//Date.now().getTime()
+		sideConsole.clear();
+		sideConsole.drawStr(0, sideConsole.height - 1, '${checkTime()}ms');
+		
+		
+		//mainConsole.drawStr(0, 0, Date.now().toString());
 	}
+	
+	private function checkTime():Int {
+		var newTime = Date.now().getTime();
+		var returnTime = newTime - oldTime;
+		oldTime = newTime;
+		return Math.floor(returnTime);
+	}
+	
 
 	/* SETUP */
 
